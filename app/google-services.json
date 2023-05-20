@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "507939828946",
+    "project_id": "presencechecker-9831a",
+    "storage_bucket": "presencechecker-9831a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:507939828946:android:9c504194bf541f7809690b",
+        "android_client_info": {
+          "package_name": "com.ocr.firebaseoc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "507939828946-2aoegdo2jamg5a723s0644a2h2gujl2d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ocr.firebaseoc",
+            "certificate_hash": "96d053db909261d20aa8b18554c2197217036465"
+          }
+        },
+        {
+          "client_id": "507939828946-akdm5cf0rinsnn3lm77hcuhs2nbkolul.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUIiNf0hftVAfcBFMg-aHXExMJnioAvac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "507939828946-13c4jjgngp4uhm8ag7qfd86coe5d377t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

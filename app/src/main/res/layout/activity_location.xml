@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="100"
+        android:background="#FFF">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50"
+            android:id="@+id/map_container"
+            >
+            <com.google.android.gms.maps.MapView
+                android:contentDescription="Votre position"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/map_view" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/location_text_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="50"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                >
+
+                <ImageView
+                    android:id="@+id/location_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_update_loation" />
+
+                <ImageView
+                    android:id="@+id/location_red_cross"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_red_cross"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/location_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/neutral_position"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/presence_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:visibility="gone"
+                style="?android:attr/borderlessButtonStyle"
+                android:background="@drawable/button_radius_accent_color"
+                android:padding="@dimen/default_margin"
+                android:textColor="#fff"
+                android:textSize="@dimen/default_text_size"
+                android:text="@string/presence_marker_text" />
+
+            <Button
+                android:id="@+id/absence_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/button_radius_accent_color"
+                android:padding="@dimen/default_margin"
+                android:text="@string/send_absence_form"
+                android:textColor="#fff"
+                android:textSize="@dimen/default_text_size"
+                android:visibility="gone"/>
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_margin="@dimen/default_large_margin"
+                android:visibility="gone" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

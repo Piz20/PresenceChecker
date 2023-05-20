@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Permission pour la simple localisation -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Permission pour la localisation précise -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Permission pour pouvoir afficher des notifications-->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <!-- MAIN ACTIVITY -->
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoTitle"> <!-- DISABLE TOOLBAR IN MAIN ACTIVITY -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> <!-- PROFILE ACTIVITY -->
+        <activity
+            android:name=".ui.ProfileActivity"
+            android:label="@string/toolbar_title_login_activity"
+            android:parentActivityName=".ui.MainActivity"
+            android:screenOrientation="portrait" /> <!-- LOCATION ACTIVITY -->
+        <activity
+            android:name=".ui.LocationActivity"
+            android:label="@string/toolbar_title_location_activity"
+            android:parentActivityName=".ui.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.AbsenceActivity"
+            android:label="@string/toolbar_title_absence_activity"
+            android:parentActivityName=".ui.LocationActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.StatisticsActivity"
+            android:label="@string/toolbar_title_statistics_activity"
+            android:parentActivityName=".ui.MainActivity"
+            android:screenOrientation="portrait"/>
+
+        <receiver android:name=".utils.MyAlarmReceiver"/>
+
+
+        <!-- FACEBOOK LOGIN -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_application_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token" /> <!-- GOOGLE MAP API -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA2Skn4Y8r7R3Yi7rpvJNarP-FnnX8CrAg" />
+    </application>
+
+</manifest>
+

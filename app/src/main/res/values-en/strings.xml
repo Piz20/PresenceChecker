@@ -1,0 +1,73 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="main_activity_description">Chat with your fiends discreetly</string>
+
+    <string name="login">Login</string>
+    <string name="mark_presence">Mark your presence</string>
+
+    <!-- NOTIFICATION SERVICE -->
+    <string name="notification_title">You have a new notification</string>
+
+    <!-- MAIN ACTIVITY -->
+    <string name="error_not_connected">Please log in first</string>
+    <string name="error_authentication_canceled">Login aborted</string>
+    <string name="error_no_internet">Network unavailable</string>
+    <string name="error_unknown_error">An unknown error occurred</string>
+    <string name="connection_succeed">Login successful!</string>
+    <string name="button_login_text_logged">View your profile</string>
+    <string name="button_login_text_not_logged">Log In</string>
+    <string name="button_statistics">My presence stats</string>
+
+
+    <!-- PROFILE ACTIVITY -->
+    <string name="toolbar_title_login_activity">Your Profile</string>
+    <string name="text_input_username">Username</string>
+    <string name="text_view_email">Email address:</string>
+    <string name="button_update_account">Change username</string>
+    <string name="button_delete_account">Delete my account</string>
+    <string name="button_sign_out_account">Log Out</string>
+    <string name="info_no_email_found">No email address found</string>
+    <string name="info_no_username_found">No username found</string>
+    <string name="popup_message_confirmation_delete_account">Are you sure you want to delete your account?</string>
+    <string name="popup_message_choice_yes">Yes</string>
+    <string name="popup_message_choice_no">No</string>
+    <string name="successfully_log_out">Successfuly log out</string>
+
+    <!-- LOCALISATION ACTIVITY -->
+    <string name="toolbar_title_location_activity">Your position</string>
+    <string name="positive_location">Congratulations you are on the Campus .</string>
+    <string name="negative_location">Sorry you are not on the Campus .</string>
+    <string name="neutral_position">Go back and re-come to update your actual location .</string>
+    <string name="presence_marker_text">I\'m present!\n</string>
+    <string name="send_absence_form">Send an absence form</string>
+    <string name="absence_form_notice">Please fill this form to signal your absence .</string>
+    <string name="absence_form_username_field">Username :</string>
+    <string name="absence_form_date_field">Date of absence :</string>
+    <string name="absence_form_field_reason">Reason of absence :</string>
+    <string name="absence_form_button_send_text">Send</string>
+    <string name="presence_noticed_successfully">Your presence has been noticed.</string>
+    <string name="presence_noticed_error">Error when sending that request.</string>
+
+    <!-- ABSENCE ACTIVITY -->
+    <string name="toolbar_title_absence_activity">Absence Form</string>
+    <string-array name="motifs_absence">
+        <item>Sickness</item>
+        <item>Maternity</item>
+        <item>Course</item>
+        <item>Other</item>
+    </string-array>
+    <string name="form_sent_successfully">Form has been sent successfully.</string>
+    <string name="form_sent_error">Error when sending absence form .</string>
+    <string name="already_sent_absence_form">You have already sent a form for today.</string>
+
+    <!-- STATISTICS ACTIVITY -->
+    <string name="toolbar_title_statistics_activity">Your stats</string>
+
+
+    <!-- FACEBOOK LOGIN -->
+    <string name="facebook_application_id">1488817101526462</string>
+    <string name="fb_login_protocol_scheme">fb1488817101526462</string>
+    <string name="facebook_client_token">8a303d2dc2c3facb372bde0f9577e3c9</string>
+
+
+
+</resources>

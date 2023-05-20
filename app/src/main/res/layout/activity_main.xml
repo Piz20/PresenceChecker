@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- IMAGE VIEW FIREBASE OC -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_logo_auth"
+        android:layout_margin="@dimen/default_large_margin"/>
+
+    <!-- TITLE FIREBASE OC -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="@dimen/default_title_size"
+        android:textStyle="bold"
+        android:layout_margin="@dimen/default_margin"/>
+
+    <!-- DESCRIPTION FIREBASE OC -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/default_text_size"
+        android:text="@string/main_activity_description"
+        android:layout_margin="@dimen/default_margin"/>
+
+    <!-- BUTTONS CONTAINER -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/default_large_margin">
+
+        <!-- BUTTON LOGIN -->
+
+        <!-- BUTTON CHAT -->
+
+        <Button
+            android:id="@+id/loginButton"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_large_margin"
+            android:background="@drawable/button_radius_primary_color"
+            android:padding="@dimen/default_large_margin"
+            android:text="@string/login"
+            android:textColor="#fff"
+            android:textSize="@dimen/default_text_size" />
+
+        <Button
+            android:id="@+id/locationButton"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_large_margin"
+            android:background="@drawable/button_radius_accent_color"
+            android:padding="@dimen/default_large_margin"
+            android:text="@string/mark_presence"
+            android:textColor="#fff"
+            android:textSize="@dimen/default_text_size" />
+        <Button
+            android:id="@+id/statisticsButton"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_large_margin"
+            android:background="@drawable/button_radius_primary_color"
+            android:padding="@dimen/default_large_margin"
+            android:text="@string/button_statistics"
+            android:textColor="#fff"
+            android:textSize="@dimen/default_text_size"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>
