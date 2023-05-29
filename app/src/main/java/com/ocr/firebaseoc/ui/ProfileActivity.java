@@ -20,7 +20,6 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
 
     private final UserManager userManager = UserManager.getInstance();
 
-    private int i = 10 ;
 
     @Override
     ActivityProfileBinding getViewBinding() {
