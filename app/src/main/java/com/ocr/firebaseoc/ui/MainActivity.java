@@ -154,8 +154,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         SettingsClient client = LocationServices.getSettingsClient(this);
         Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
 
-        //Si la localisation est activée
-        task.addOnSuccessListener(locationSettingsResponse -> Toast.makeText(this, "Localisation activée", Toast.LENGTH_SHORT).show());
        task.addOnFailureListener(exception -> {
             if (exception instanceof ResolvableApiException) {
 
