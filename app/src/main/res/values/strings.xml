@@ -60,7 +60,13 @@
     <string name="already_sent_absence_form">Vous avez déjà envoyer un formulaire pour aujourd\'hui.</string>
 
     <!-- STATISTICS ACTIVITY -->
-    <string name="toolbar_title_statistics_activity">Vos stats</string>
+    <string name="toolbar_title_statistics_activity">Mes stats</string>
+    <string name="reason_maternite">Maternité</string>
+    <string name="reason_course">Formation</string>
+    <string name="reason_sickness">Maladie</string>
+    <string name="reason_other">Autre</string>
+    <string name="presences">Présences</string>
+    <string name="details">Details</string>
 
     <!-- FACEBOOK LOGIN -->
     <string name="facebook_application_id">1488817101526462</string>

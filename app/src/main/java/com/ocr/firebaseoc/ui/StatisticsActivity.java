@@ -3,10 +3,12 @@ package com.ocr.firebaseoc.ui;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -41,6 +43,8 @@ public class StatisticsActivity extends AppCompatActivity {
     ImageView imageView ;
     ProgressBar progressBar ;
     Pie pie ;
+
+    Button ButtonDetailsStatistics ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +52,11 @@ public class StatisticsActivity extends AppCompatActivity {
         anyChartView = findViewById(R.id.statistics_pie_chart) ;
         progressBar = findViewById(R.id.progress_bar) ;
         imageView = findViewById(R.id.imageView_piechart) ;
+        ButtonDetailsStatistics = findViewById(R.id.button_statistics_details) ;
+        ButtonDetailsStatistics.setVisibility(View.GONE);
         pie = AnyChart.pie();
         setPieChart();
-
+       setupListerners();
     }
 
     private void setPieChart(){
@@ -86,6 +92,7 @@ public class StatisticsActivity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
             anyChartView.setVisibility(View.VISIBLE);
             imageView.setVisibility(View.VISIBLE);
+            ButtonDetailsStatistics.setVisibility(View.VISIBLE);
             ArrayList<DataEntry> pieData = new ArrayList<>() ;
 
             pieData.add(new ValueDataEntry("Sickness", countMaladie)) ;
@@ -96,7 +103,7 @@ public class StatisticsActivity extends AppCompatActivity {
 
             pie.data(pieData) ;
 
-            pie.title("My stats") ;
+            pie.title("My Stats") ;
             pie.legend().enabled(true);
             pie.legend().position("bottom");
             pie.legend().padding(10d, 10d, 10d, 10d);
@@ -111,6 +118,16 @@ public class StatisticsActivity extends AppCompatActivity {
 
     private CollectionReference getUsersCollection() {
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
+    }
+    private void setupListerners(){
+        ButtonDetailsStatistics.setOnClickListener(view -> {
+            startDetailsStatisticsActivity();
+        });
+    }
+
+    private void startDetailsStatisticsActivity(){
+        Intent intent = new Intent(this, DetailsStatisticsActivity.class) ;
+        startActivity(intent);
     }
 
 }

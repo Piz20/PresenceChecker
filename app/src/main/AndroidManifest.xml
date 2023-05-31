@@ -47,6 +47,10 @@
             android:label="@string/toolbar_title_statistics_activity"
             android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.DetailsStatisticsActivity"
+            android:label="Detais de presences"
+            android:parentActivityName=".ui.StatisticsActivity"
+            android:screenOrientation="portrait"/>
 
         <receiver android:name=".utils.MyAlarmReceiver"/>
 
