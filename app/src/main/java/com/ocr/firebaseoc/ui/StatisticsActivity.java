@@ -7,17 +7,16 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Pie;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,16 +37,18 @@ public class StatisticsActivity extends AppCompatActivity {
 
     private static final String COLLECTION_NAME = "users" ;
     private final UserManager userManager = UserManager.getInstance();
-    PieChart pieChart ;
-
+    AnyChartView anyChartView ;
+    ImageView imageView ;
     ProgressBar progressBar ;
-
+    Pie pie ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
-        pieChart = findViewById(R.id.statistics_pie_chart) ;
+        anyChartView = findViewById(R.id.statistics_pie_chart) ;
         progressBar = findViewById(R.id.progress_bar) ;
+        imageView = findViewById(R.id.imageView_piechart) ;
+        pie = AnyChart.pie();
         setPieChart();
 
     }
@@ -83,29 +84,25 @@ public class StatisticsActivity extends AppCompatActivity {
             }
 
             progressBar.setVisibility(View.GONE);
-            pieChart.setVisibility(View.VISIBLE);
-            ArrayList<PieEntry> mystats = new ArrayList<>() ;
+            anyChartView.setVisibility(View.VISIBLE);
+            imageView.setVisibility(View.VISIBLE);
+            ArrayList<DataEntry> pieData = new ArrayList<>() ;
 
-            mystats.add(new PieEntry(countMaladie,"Sickness")) ;
-            mystats.add(new PieEntry(countFormation,"Course")) ;
-            mystats.add(new PieEntry(countMaternite,"Maternity")) ;
-            mystats.add(new PieEntry(countAutre,"Other")) ;
-            mystats.add(new PieEntry(countPresences,"Presences")) ;
+            pieData.add(new ValueDataEntry("Sickness", countMaladie)) ;
+            pieData.add(new ValueDataEntry("Course",countFormation));
+            pieData.add(new ValueDataEntry("Maternity",countMaternite)) ;
+            pieData.add(new ValueDataEntry("Other",countAutre)) ;
+            pieData.add(new ValueDataEntry("Presences",countPresences)) ;
 
-            PieDataSet pieDataSet = new PieDataSet(mystats,"") ;
-            pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-            pieDataSet.setValueTextColor(Color.BLACK);
-            pieDataSet.setValueTextSize(15f);
-            pieChart.getLegend().setTextSize(15f);
+            pie.data(pieData) ;
 
+            pie.title("My stats") ;
+            pie.legend().enabled(true);
+            pie.legend().position("bottom");
+            pie.legend().padding(10d, 10d, 10d, 10d);
+            pie.animation() ;
 
-            PieData pieData = new PieData(pieDataSet) ;
-
-            pieChart.setData(pieData);
-            pieChart.getDescription().setEnabled(false);
-            pieChart.setCenterText("my stats");
-            pieChart.getLegend().setOrientation(Legend.LegendOrientation.HORIZONTAL);
-            pieChart.animate() ;
+            anyChartView.setChart(pie);
         });
     }
     public FirebaseUser getCurrentUser() {

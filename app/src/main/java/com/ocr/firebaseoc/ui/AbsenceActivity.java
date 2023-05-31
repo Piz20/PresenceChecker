@@ -194,7 +194,7 @@ public class AbsenceActivity extends BaseActivity<ActivityAbsenceBinding> {
                     }
                 }
 
-                private Absence makeAbsence() {
+                public Absence makeAbsence() {
                     return new Absence(Absence.reasonToFrench(reason), date);
                 }
 
