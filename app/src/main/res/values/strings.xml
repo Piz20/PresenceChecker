@@ -19,6 +19,7 @@
     <string name="button_login_text_logged">Afficher le profil</string>
     <string name="button_login_text_not_logged">Connexion</string>
     <string name="button_statistics">Mes stats de presences</string>
+    <string name="readme">A lire</string>
 
     <!-- PROFILE ACTIVITY -->
     <string name="toolbar_title_login_activity">Votre Profil</string>
@@ -73,7 +74,7 @@
     <string name="facebook_application_id">1488817101526462</string>
     <string name="fb_login_protocol_scheme">fb1488817101526462</string>
     <string name="facebook_client_token">8a303d2dc2c3facb372bde0f9577e3c9</string>
-
+    <string name="about_text">Bienvenue sur notre application! Cette application a été créée pour vous aider à ...</string>
 
 
 </resources>

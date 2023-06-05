@@ -268,45 +268,9 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
         int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-        AtomicInteger a = new AtomicInteger() ;
         FirebaseUser user = getCurrentUser();
         if (user != null) {
             String uid = user.getUid();
-            this.getUsersCollection().document(uid).collection("absences").orderBy("date", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-
-                    if (!task.getResult().isEmpty()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Timestamp timestamp = document.getTimestamp("date");
-                            Calendar FirestoreCalendar = Calendar.getInstance();
-                            if (timestamp != null) {
-                                FirestoreCalendar.setTimeInMillis(timestamp.getSeconds() * 1000);
-                            }
-                            int existingYear = FirestoreCalendar.get(Calendar.YEAR);
-                            int existingMonth = FirestoreCalendar.get(Calendar.MONTH) + 1;
-                            int existingDay = FirestoreCalendar.get(Calendar.DAY_OF_MONTH);
-                            System.out.println(existingDay + " " + existingMonth + " " + existingYear + "****************************");
-                            System.out.println(dayOfMonth + " " + month + " " + year + "****************************");
-
-                            if (year == existingYear && month == existingMonth && dayOfMonth == existingDay) {
-                                mProgressbar.setVisibility(View.GONE);
-                                Snackbar.make(view, R.string.already_sent_absence_form , Snackbar.LENGTH_LONG)
-                                        .show();
-                                a.set(0);
-                                break ;
-                            } else if (!(year == existingDay && month == existingMonth && dayOfMonth == existingDay)) {
-                                mProgressbar.setVisibility(View.GONE);
-                                a.set(1);
-                                break;
-                            }
-                        }
-                    } else {
-
-                        Log.d(TAG, "Error getting documents: ", task.getException());
-                    }
-
-                }
-            });
             this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).orderBy("date", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -365,7 +329,7 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
                 }
                 // Cree un objet presence
                 public Presence makePresence() {
-                    return new Presence(date);
+                    return new Presence("",date);
                 }
                 //Retourne l'utilisateur actuellement connecté
                 private CollectionReference getUsersCollection() {

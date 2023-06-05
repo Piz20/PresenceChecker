@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,6 +21,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.ocr.firebaseoc.Adapter.MyAdapter;
 import com.ocr.firebaseoc.R;
 import com.ocr.firebaseoc.models.Document;
@@ -40,27 +43,30 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
         String uid;
         if (user != null) {
              uid = user.getUid();
-           this.getUsersCollection().document(uid).collection("absences").orderBy("date", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
-               if (task.isSuccessful()) {
-                   List<Document> documents = new ArrayList<>();
-                   for (QueryDocumentSnapshot document : task.getResult()) {
-                       String reason = document.getString("reason");
-                       Timestamp date = document.getTimestamp("date");
-                       documents.add(new Document(reason, date));
-                   }
+            Query query1 = this.getUsersCollection().document(uid).collection("absences").orderBy("date", Query.Direction.DESCENDING) ;
+            Query query2 = this.getUsersCollection().document(uid).collection("presences").orderBy("date", Query.Direction.DESCENDING) ;
+            Task<List<QuerySnapshot>> allTasks = Tasks.whenAllSuccess(query1.get(), query2.get());
+             allTasks.addOnSuccessListener(querySnapshots -> {
+                 progressBar.setVisibility(View.GONE);
+                 List<Document> documents = new ArrayList<>();
+                 for (QueryDocumentSnapshot document : querySnapshots.get(0)) {
+                     String reason = document.getString("reason");
+                     Timestamp date = document.getTimestamp("date");
+                     documents.add(new Document(reason, date));
+                 }
+                 for (QueryDocumentSnapshot document : querySnapshots.get(1)) {
+                     String reason = document.getString("reason");
+                     Timestamp date = document.getTimestamp("date");
+                     documents.add(new Document(reason, date));
+                 }
+                 // Obtention de la RecyclerView
+                 RecyclerView recyclerView = findViewById(R.id.recyclerView);
+                 recyclerView.setVisibility(View.VISIBLE);
+                 // Configuration de la RecyclerView
+                 MyAdapter adapter = new MyAdapter(documents);
+                 recyclerView.setAdapter(adapter);
+                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));}) ;
 
-                   progressBar.setVisibility(View.GONE);
-                   // Obtention de la RecyclerView
-                   RecyclerView recyclerView = findViewById(R.id.recyclerView);
-                   recyclerView.setVisibility(View.VISIBLE);
-                   // Configuration de la RecyclerView
-                   MyAdapter adapter = new MyAdapter(documents);
-                   recyclerView.setAdapter(adapter);
-                   recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-               } else {
-                   Log.e(TAG, "Error getting documents: ", task.getException());
-               }
-           });
         }
     }
     private CollectionReference getUsersCollection () {

@@ -4,11 +4,12 @@ import java.util.Date;
 
 public class Presence {
     private Date date;
-
+    private  String reason ;
     public Presence() {
     }
 
-    public Presence(Date date) {
+    public Presence(String reason ,Date date) {
+        this.reason = "" ;
         this.date = date;
     }
 

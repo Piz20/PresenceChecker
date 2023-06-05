@@ -16,7 +16,7 @@
     <string name="button_login_text_logged">View your profile</string>
     <string name="button_login_text_not_logged">Log In</string>
     <string name="button_statistics">My presence stats</string>
-
+    <string name="readme">To read , very important</string>
 
     <!-- PROFILE ACTIVITY -->
     <string name="toolbar_title_login_activity">Your Profile</string>
@@ -69,6 +69,8 @@
     <string name="reason_other">Other</string>
     <string name="presences">Presences</string>
     <string name="details">Details</string>
+    <!-- ABOUT ACTIVITY -->
+    <string name="about_text">Bienvenue sur notre application! Cette application a été créée pour vous aider à ...</string>
 
     <!-- FACEBOOK LOGIN -->
     <string name="facebook_application_id">1488817101526462</string>

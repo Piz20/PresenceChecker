@@ -51,6 +51,11 @@
             android:label="Detais de presences"
             android:parentActivityName=".ui.StatisticsActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.AboutActivity"
+            android:label="Informations Importantes"
+            android:parentActivityName=".ui.MainActivity"
+            android:screenOrientation="portrait"/>
+
 
 
         <!-- FACEBOOK LOGIN -->
