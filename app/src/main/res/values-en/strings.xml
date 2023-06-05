@@ -46,6 +46,8 @@
     <string name="absence_form_button_send_text">Send</string>
     <string name="presence_noticed_successfully">Your presence has been noticed.</string>
     <string name="presence_noticed_error">Error when sending that request.</string>
+    <string name="presence_already_noticed">Your presence has been already noticed today!</string>
+
 
     <!-- ABSENCE ACTIVITY -->
     <string name="toolbar_title_absence_activity">Absence Form</string>
@@ -57,7 +59,7 @@
     </string-array>
     <string name="form_sent_successfully">Form has been sent successfully.</string>
     <string name="form_sent_error">Error when sending absence form .</string>
-    <string name="already_sent_absence_form">You have already sent a form for today.</string>
+    <string name="already_sent_absence_form">You have already sent a form today.</string>
 
     <!-- STATISTICS ACTIVITY -->
     <string name="toolbar_title_statistics_activity">My stats</string>

@@ -52,8 +52,6 @@
             android:parentActivityName=".ui.StatisticsActivity"
             android:screenOrientation="portrait"/>
 
-        <receiver android:name=".utils.MyAlarmReceiver"/>
-
 
         <!-- FACEBOOK LOGIN -->
         <meta-data

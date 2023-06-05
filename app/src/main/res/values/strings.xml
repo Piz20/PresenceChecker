@@ -47,6 +47,7 @@
     <string name="absence_form_button_send_text">Envoyer</string>
     <string name="presence_noticed_successfully">Votre présence a été signalée .</string>
     <string name="presence_noticed_error">Erreur lors du signalement de votre présence.</string>
+    <string name="presence_already_noticed">Votre présence a déjà été signalée aujourd\'hui !</string>
     <!-- ABSENCE ACTIVITY -->
     <string name="toolbar_title_absence_activity">Formulaire d\'absence</string>
     <string-array name="motifs_absence">
@@ -55,9 +56,9 @@
         <item>Formation</item>
         <item>Autre</item>
     </string-array>
-    <string name="form_sent_successfully">Formulaire envoyé avec succès .</string>
+    <string name="form_sent_successfully">Formulaire d\'absences envoyé avec succès .</string>
     <string name="form_sent_error">Erreur lors de l\'envoi du formulaire d\'absence .</string>
-    <string name="already_sent_absence_form">Vous avez déjà envoyer un formulaire pour aujourd\'hui.</string>
+    <string name="already_sent_absence_form">Vous avez déjà envoyé un formulaire d\'absence aujourd\'hui.</string>
 
     <!-- STATISTICS ACTIVITY -->
     <string name="toolbar_title_statistics_activity">Mes stats</string>

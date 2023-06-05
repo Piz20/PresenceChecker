@@ -25,7 +25,7 @@
         <com.anychart.AnyChartView
             android:id="@+id/statistics_pie_chart"
             android:layout_width="500dp"
-            android:layout_height="300dp"
+            android:layout_height="380dp"
             android:layout_below="@+id/imageView_piechart"
             android:layout_gravity="center"
             android:layout_marginTop="3dp"

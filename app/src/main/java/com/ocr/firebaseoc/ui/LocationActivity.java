@@ -1,23 +1,18 @@
 package com.ocr.firebaseoc.ui;
 
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.Manifest;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,16 +28,21 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.ocr.firebaseoc.R;
 import com.ocr.firebaseoc.databinding.ActivityLocationBinding;
 import com.ocr.firebaseoc.models.Presence;
 import com.ocr.firebaseoc.utils.LocationCalcul;
-import com.ocr.firebaseoc.utils.MyAlarmReceiver;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -51,32 +51,32 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
 
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 210;
     private static final String MAPVIEW_BUNDLE_KEY = "211";
-    private static final String COLLECTION_NAME = "users" ;
+    private static final String COLLECTION_NAME = "users";
 
-    private static final String SUB_COLLECTION_NAME = "presences" ;
+    private static final String SUB_COLLECTION_NAME = "presences";
 
     private final double latitudeEnspd = 4.0657954;
     private final double longitudeEnspd = 9.7088116;
 
-    private LocationCalcul mLocationCalcul ;
+    private LocationCalcul mLocationCalcul;
     private GoogleMap mMap;
 
     private MapView mMapView;
 
-    public  TextView mTextView;
+    public TextView mTextView;
 
-    Button mButtonAbsence ;
+    Button mButtonAbsence;
 
-    Button mButtonPresence ;
+    Button mButtonPresence;
 
-   ImageView mLocationImage ;
+    ImageView mLocationImage;
 
-   ImageView mredCrossImage ;
+    ImageView mredCrossImage;
 
-   ProgressBar mProgressbar ;
+    ProgressBar mProgressbar;
 
-    Date date ;
-    Calendar calendar ;
+    Date date;
+
 
     @Override
     ActivityLocationBinding getViewBinding() {
@@ -91,14 +91,14 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
         //initialisation de la mapView et du TextView ainsi que les boutons pour la présence te l'absence
         mMapView = findViewById(R.id.map_view);
         mTextView = findViewById(R.id.location_text_view);
-        mButtonAbsence = findViewById(R.id.absence_button) ;
-        mButtonPresence = findViewById(R.id.presence_button) ;
-        mLocationImage = findViewById(R.id.location_image) ;
-        mredCrossImage = findViewById(R.id.location_red_cross) ;
-        mProgressbar = findViewById(R.id.progress_bar) ;
+        mButtonAbsence = findViewById(R.id.absence_button);
+        mButtonPresence = findViewById(R.id.presence_button);
+        mLocationImage = findViewById(R.id.location_image);
+        mredCrossImage = findViewById(R.id.location_red_cross);
+        mProgressbar = findViewById(R.id.progress_bar);
         //Rend par défaut les boutons d'absences et de présences  invisibles
         mButtonAbsence.setVisibility(View.GONE);
-        mButtonPresence.setVisibility(View.GONE) ;
+        mButtonPresence.setVisibility(View.GONE);
         //Place des écouteurs aux  pressions des boutons d'absences et de présences
         mButtonAbsence.setOnClickListener(v -> startAbsenceActivity());
         mButtonPresence.setOnClickListener(this::createPresence);
@@ -110,11 +110,9 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
     }
 
 
-
-
     private void startAbsenceActivity() {
-       Intent intent = new Intent(this,AbsenceActivity.class) ;
-       startActivity(intent);
+        Intent intent = new Intent(this, AbsenceActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -211,8 +209,8 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
 
-                mLocationCalcul = new LocationCalcul(latitudeEnspd,longitudeEnspd,latitude,longitude,1) ;
-                System.out.println("********************************************************"+latitude+" "+longitude) ;
+                mLocationCalcul = new LocationCalcul(latitudeEnspd, longitudeEnspd, latitude, longitude, 1);
+                System.out.println("********************************************************" + latitude + " " + longitude);
                 if (mLocationCalcul.dansLeRayon()) {
                     mTextView.setText(R.string.positive_location);
                     mLocationImage.setImageResource(R.drawable.ic_good_location);
@@ -222,9 +220,9 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
                     mMap.addMarker(new MarkerOptions().position(currentLocation).title("Votre position"));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
                     //Rend le bouton de présence visible étant donné la localisation positive
-                    mButtonPresence.setVisibility(View.VISIBLE) ;
+                    mButtonPresence.setVisibility(View.VISIBLE);
 
-                } else if (!mLocationCalcul.dansLeRayon()){
+                } else if (!mLocationCalcul.dansLeRayon()) {
                     mTextView.setText(R.string.negative_location);
                     mLocationImage.setImageResource(R.drawable.ic_wrong_location);
                     mredCrossImage.setVisibility(View.VISIBLE);
@@ -244,12 +242,6 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
         });
     }
 
-    // Cree un objet Presence
-    public Presence makePresence() {
-        calendar = Calendar.getInstance() ;
-        date = calendar.getTime() ;
-        return new Presence(date);
-    }
 
 
     //Permet de récupérer la collection sur laquelle on travaille , en l'occurence "users"
@@ -263,20 +255,92 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
         return FirebaseAuth.getInstance().getCurrentUser();
     }
 
-    //Gere l'envoi des données sur Firebase afin de créer un document dans la collection absence
+    //Gere l'envoi des données sur Firebase afin de créer un document dans la collection presence
     public void createPresence(View view) {
         mProgressbar.setVisibility(View.VISIBLE);
+        Calendar calendar = Calendar.getInstance();
+        //Pour convertir l'objet datePicker en date
+
+        date = calendar.getTime();
+
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
         FirebaseUser user = getCurrentUser();
         if (user != null) {
-            String uid = user.getUid() ;
-            this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).add(this.makePresence())
-                    .addOnSuccessListener(documentReference -> {Snackbar.make(view, R.string.presence_noticed_successfully , Snackbar.LENGTH_LONG).show();mProgressbar.setVisibility(View.GONE);})
-                    .addOnFailureListener(e -> {Snackbar.make(view, R.string.presence_noticed_error, Snackbar.LENGTH_LONG)
-                            .show();mProgressbar.setVisibility(View.GONE);});
+            String uid = user.getUid();
+            this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).orderBy("date", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().isEmpty()) {
+                            this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).add(this.makePresence())
+                                    .addOnSuccessListener(documentReference -> {
+                                        Snackbar.make(view, R.string.presence_noticed_successfully, Snackbar.LENGTH_LONG).show();
+                                        mProgressbar.setVisibility(View.GONE);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Snackbar.make(view, R.string.presence_noticed_error, Snackbar.LENGTH_LONG)
+                                                .show();
+                                        mProgressbar.setVisibility(View.GONE);
+                                    });
+
+                        }
+                        if (!task.getResult().isEmpty()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Timestamp timestamp = document.getTimestamp("date");
+                                Calendar FirestoreCalendar = Calendar.getInstance();
+                                if (timestamp != null) {
+                                    FirestoreCalendar.setTimeInMillis(timestamp.getSeconds() * 1000);
+                                }
+                                int existingYear = FirestoreCalendar.get(Calendar.YEAR);
+                                int existingMonth = FirestoreCalendar.get(Calendar.MONTH) + 1;
+                                int existingDay = FirestoreCalendar.get(Calendar.DAY_OF_MONTH);
+                                System.out.println(existingDay + " " + existingMonth + " " + existingYear + "****************************");
+                                System.out.println(dayOfMonth + " " + month + " " + year + "****************************");
+
+                                if (year == existingYear && month == existingMonth && dayOfMonth == existingDay) {
+                                    mProgressbar.setVisibility(View.GONE);
+                                    Snackbar.make(view, R.string.presence_already_noticed, Snackbar.LENGTH_LONG)
+                                            .show();
+                                    break;
+                                } else if (!(year == existingDay && month == existingMonth && dayOfMonth == existingDay)) {
+                                    this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).add(this.makePresence())
+                                            .addOnSuccessListener(documentReference -> {
+                                                Snackbar.make(view, R.string.presence_noticed_successfully , Snackbar.LENGTH_LONG).show();
+                                                mProgressbar.setVisibility(View.GONE);
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Snackbar.make(view, R.string.presence_noticed_error, Snackbar.LENGTH_LONG)
+                                                        .show();
+                                                mProgressbar.setVisibility(View.GONE);
+                                            });
+                                    break;
+                                }
+                            }
+                        } else {
+
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+
+                    }
+                }
+                // Cree un objet presence
+                public Presence makePresence() {
+                    return new Presence(date);
+                }
+                //Retourne l'utilisateur actuellement connecté
+                private CollectionReference getUsersCollection() {
+                    return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
+
+                }
+            });
+
         }
+
+
     }
-
-
 }
 
 

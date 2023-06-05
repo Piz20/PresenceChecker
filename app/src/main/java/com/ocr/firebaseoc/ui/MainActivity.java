@@ -1,14 +1,10 @@
 package com.ocr.firebaseoc.ui;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -28,7 +24,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.ocr.firebaseoc.R;
 import com.ocr.firebaseoc.databinding.ActivityMainBinding;
 import com.ocr.firebaseoc.manager.UserManager;
-import com.ocr.firebaseoc.utils.MyAlarmReceiver;
 
 import java.util.Arrays;
 import java.util.List;
@@ -59,25 +54,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setupListeners();
-        startAlarm();
+
 
     }
 
-    private void startAlarm() {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, MyAlarmReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // Temps d'attente avant de déclencher le premier toast (10 secondes)
-        long initialDelay = 10000;
-
-        // Temps entre chaque toast (10 secondes)
-        long repeatInterval = 10000;
-
-        // Définir l'alarme pour qu'elle se répète toutes les 10 secondes
-        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP , SystemClock.elapsedRealtime() + initialDelay, 60000, alarmIntent);
-
-    }
 
     private void setupListeners() {
         // Bouton de connexion
