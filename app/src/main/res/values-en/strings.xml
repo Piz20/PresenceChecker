@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="main_activity_description">Chat with your fiends discreetly</string>
+    <string name="main_activity_description">Mark your presence</string>
 
     <string name="login">Login</string>
     <string name="mark_presence">Mark your presence</string>
@@ -63,7 +63,7 @@
 
     <!-- STATISTICS ACTIVITY -->
     <string name="toolbar_title_statistics_activity">My stats</string>
-    <string name="reason_maternite">Maternity</string>
+    <string name="reason_maternity">Maternity</string>
     <string name="reason_course">Course</string>
     <string name="reason_sickness">Sickness</string>
     <string name="reason_other">Other</string>

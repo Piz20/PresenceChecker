@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
+import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -46,6 +47,7 @@ import com.ocr.firebaseoc.utils.LocationCalcul;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class LocationActivity extends BaseActivity<ActivityLocationBinding> implements OnMapReadyCallback {
 
@@ -217,7 +219,7 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
                     mredCrossImage.setVisibility(View.GONE);
                     //Effectue un Zoom sur la position actuelle de l'utilisateur
                     LatLng currentLocation = new LatLng(latitude, longitude);
-                    mMap.addMarker(new MarkerOptions().position(currentLocation).title("Votre position"));
+                    mMap.addMarker(new MarkerOptions().position(currentLocation).title(getString(R.string.toolbar_title_location_activity))) ;
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
                     //Rend le bouton de présence visible étant donné la localisation positive
                     mButtonPresence.setVisibility(View.VISIBLE);
@@ -228,7 +230,7 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
                     mredCrossImage.setVisibility(View.VISIBLE);
                     //Effectue un Zoom sur la position actuelle de l'utilisateur
                     LatLng currentLocation = new LatLng(latitude, longitude);
-                    mMap.addMarker(new MarkerOptions().position(currentLocation).title("Votre position"));
+                    mMap.addMarker(new MarkerOptions().position(currentLocation).title(getString(R.string.toolbar_title_location_activity))) ;
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
                     //Rend le bouton d'absence visible étant donné la localistion négative
                     mButtonAbsence.setVisibility(View.VISIBLE);
@@ -266,10 +268,45 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
         int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-
+        AtomicInteger a = new AtomicInteger() ;
         FirebaseUser user = getCurrentUser();
         if (user != null) {
             String uid = user.getUid();
+            this.getUsersCollection().document(uid).collection("absences").orderBy("date", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+
+                    if (!task.getResult().isEmpty()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Timestamp timestamp = document.getTimestamp("date");
+                            Calendar FirestoreCalendar = Calendar.getInstance();
+                            if (timestamp != null) {
+                                FirestoreCalendar.setTimeInMillis(timestamp.getSeconds() * 1000);
+                            }
+                            int existingYear = FirestoreCalendar.get(Calendar.YEAR);
+                            int existingMonth = FirestoreCalendar.get(Calendar.MONTH) + 1;
+                            int existingDay = FirestoreCalendar.get(Calendar.DAY_OF_MONTH);
+                            System.out.println(existingDay + " " + existingMonth + " " + existingYear + "****************************");
+                            System.out.println(dayOfMonth + " " + month + " " + year + "****************************");
+
+                            if (year == existingYear && month == existingMonth && dayOfMonth == existingDay) {
+                                mProgressbar.setVisibility(View.GONE);
+                                Snackbar.make(view, R.string.already_sent_absence_form , Snackbar.LENGTH_LONG)
+                                        .show();
+                                a.set(0);
+                                break ;
+                            } else if (!(year == existingDay && month == existingMonth && dayOfMonth == existingDay)) {
+                                mProgressbar.setVisibility(View.GONE);
+                                a.set(1);
+                                break;
+                            }
+                        }
+                    } else {
+
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+
+                }
+            });
             this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).orderBy("date", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {

@@ -62,7 +62,7 @@
 
     <!-- STATISTICS ACTIVITY -->
     <string name="toolbar_title_statistics_activity">Mes stats</string>
-    <string name="reason_maternite">Maternité</string>
+    <string name="reason_maternity">Maternité</string>
     <string name="reason_course">Formation</string>
     <string name="reason_sickness">Maladie</string>
     <string name="reason_other">Autre</string>

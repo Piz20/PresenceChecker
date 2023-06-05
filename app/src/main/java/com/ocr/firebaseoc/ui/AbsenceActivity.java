@@ -9,8 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -149,6 +147,7 @@ public class AbsenceActivity extends BaseActivity<ActivityAbsenceBinding> {
 
         if (user != null) {
             String uid = user.getUid();
+
             this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).orderBy("date", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -178,7 +177,7 @@ public class AbsenceActivity extends BaseActivity<ActivityAbsenceBinding> {
                                     Snackbar.make(view, R.string.already_sent_absence_form, Snackbar.LENGTH_LONG)
                                             .show();
                                     break ;
-                                } else if (!(year == existingDay && month == existingMonth && dayOfMonth == existingDay)) {
+                                } else if ((!(year == existingDay && month == existingMonth && dayOfMonth == existingDay))){
                                     this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).add(this.makeAbsence())
                                             .addOnSuccessListener(documentReference -> { Snackbar.make(view, R.string.form_sent_successfully, Snackbar.LENGTH_LONG).show();mProgressBar.setVisibility(View.GONE);})
                                             .addOnFailureListener(e -> {Snackbar.make(view, R.string.form_sent_error, Snackbar.LENGTH_LONG)

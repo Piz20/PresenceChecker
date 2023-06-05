@@ -95,15 +95,16 @@ public class StatisticsActivity extends AppCompatActivity {
             ButtonDetailsStatistics.setVisibility(View.VISIBLE);
             ArrayList<DataEntry> pieData = new ArrayList<>() ;
 
-            pieData.add(new ValueDataEntry("Sickness", countMaladie)) ;
-            pieData.add(new ValueDataEntry("Course",countFormation));
-            pieData.add(new ValueDataEntry("Maternity",countMaternite)) ;
-            pieData.add(new ValueDataEntry("Other",countAutre)) ;
-            pieData.add(new ValueDataEntry("Presences",countPresences)) ;
+            pieData.add(new ValueDataEntry(getString(R.string.presences),countPresences)) ;
+            pieData.add(new ValueDataEntry(getString(R.string.reason_sickness), countMaladie)) ;
+            pieData.add(new ValueDataEntry(getString(R.string.reason_course),countFormation));
+            pieData.add(new ValueDataEntry(getString(R.string.reason_maternity),countMaternite)) ;
+            pieData.add(new ValueDataEntry(getString(R.string.reason_other),countAutre)) ;
+
 
             pie.data(pieData) ;
 
-            pie.title("My Stats") ;
+            pie.title(getString(R.string.toolbar_title_statistics_activity)) ;
             pie.legend().enabled(true);
             pie.legend().position("bottom");
             pie.legend().padding(10d, 10d, 10d, 10d);
