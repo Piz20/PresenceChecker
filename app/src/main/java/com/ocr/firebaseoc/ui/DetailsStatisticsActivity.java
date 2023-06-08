@@ -44,7 +44,8 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
         if (user != null) {
              uid = user.getUid();
             Query query1 = this.getUsersCollection().document(uid).collection("absences").orderBy("date", Query.Direction.DESCENDING) ;
-            Query query2 = this.getUsersCollection().document(uid).collection("presences").orderBy("date", Query.Direction.DESCENDING) ;
+            Query query2 = this.getUsersCollection().document(uid).collection("presences").orderBy("date", Query.Direction.DESCENDING)
+                    .whereEqualTo("confirmed",true) ;
             Task<List<QuerySnapshot>> allTasks = Tasks.whenAllSuccess(query1.get(), query2.get());
              allTasks.addOnSuccessListener(querySnapshots -> {
                  progressBar.setVisibility(View.GONE);

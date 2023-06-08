@@ -38,15 +38,20 @@
     <string name="negative_location">Sorry you are not on the Campus .</string>
     <string name="neutral_position">Go back and re-come to update your actual location .</string>
     <string name="presence_marker_text">I\'m present!\n</string>
+    <string name="presence_marker_toast_text">Markage is impossible now . Please check out the guid for the valid markage hours .</string>
     <string name="send_absence_form">Send an absence form</string>
     <string name="absence_form_notice">Please fill this form to signal your absence .</string>
     <string name="absence_form_username_field">Username :</string>
     <string name="absence_form_date_field">Date of absence :</string>
     <string name="absence_form_field_reason">Reason of absence :</string>
     <string name="absence_form_button_send_text">Send</string>
-    <string name="presence_noticed_successfully">Your presence has been noticed.</string>
+    <string name="presence_noticed">Your presence has been noticed for this morning , kindly recome confirm it later .</string>
     <string name="presence_noticed_error">Error when sending that request.</string>
-    <string name="presence_already_noticed">Your presence has been already noticed today!</string>
+    <string name="presence_already_noticed">Your presence has been already noticed this morning !</string>
+    <string name="no_presence_noticed_morning">None presence was noticed this morning , you are absent ! An absence form has been sent .</string>
+
+    <string name="presence_confirmed">Presence confirmed .</string>
+    <string name="presence_already_confirmed">Your presence has been already confirmed.</string>
 
 
     <!-- ABSENCE ACTIVITY -->
@@ -76,7 +81,6 @@
     <string name="facebook_application_id">1488817101526462</string>
     <string name="fb_login_protocol_scheme">fb1488817101526462</string>
     <string name="facebook_client_token">8a303d2dc2c3facb372bde0f9577e3c9</string>
-
 
 
 </resources>

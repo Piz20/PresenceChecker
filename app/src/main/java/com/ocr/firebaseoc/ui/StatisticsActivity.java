@@ -37,82 +37,88 @@ import java.util.Objects;
 
 public class StatisticsActivity extends AppCompatActivity {
 
-    private static final String COLLECTION_NAME = "users" ;
+    private static final String COLLECTION_NAME = "users";
     private final UserManager userManager = UserManager.getInstance();
-    AnyChartView anyChartView ;
-    ImageView imageView ;
-    ProgressBar progressBar ;
-    Pie pie ;
+    AnyChartView anyChartView;
+    ImageView imageView;
+    ProgressBar progressBar;
+    Pie pie;
 
-    Button ButtonDetailsStatistics ;
+    Button ButtonDetailsStatistics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
-        anyChartView = findViewById(R.id.statistics_pie_chart) ;
-        progressBar = findViewById(R.id.progress_bar) ;
-        imageView = findViewById(R.id.imageView_piechart) ;
-        ButtonDetailsStatistics = findViewById(R.id.button_statistics_details) ;
+        anyChartView = findViewById(R.id.statistics_pie_chart);
+        progressBar = findViewById(R.id.progress_bar);
+        imageView = findViewById(R.id.imageView_piechart);
+        ButtonDetailsStatistics = findViewById(R.id.button_statistics_details);
         ButtonDetailsStatistics.setVisibility(View.GONE);
         pie = AnyChart.pie();
         setPieChart();
-       setupListerners();
+        setupListerners();
     }
 
-    private void setPieChart(){
+    private void setPieChart() {
         FirebaseUser user = getCurrentUser();
-        String uid = user.getUid() ;
+        String uid = user.getUid();
         progressBar.setVisibility(View.VISIBLE);
         //Ici nous allons recuperer les donnees de nos absences et de nso presences et mettre notre PieChart à jour avec .
-        Query query1 = this.getUsersCollection().document(uid).collection("absences") ;
+        Query query1 = this.getUsersCollection().document(uid).collection("absences");
 
-        Query query2 = this.getUsersCollection().document(uid).collection("presences") ;
+        Query query2 = this.getUsersCollection().document(uid).collection("presences");
 
         Task<List<QuerySnapshot>> allTasks = Tasks.whenAllSuccess(query1.get(), query2.get());
         allTasks.addOnSuccessListener(querySnapshots -> {
             int countMaladie = 0;
             int countFormation = 0;
-            int countMaternite = 0  ;
+            int countMaternite = 0;
             int countAutre = 0;
-            int countPresences = querySnapshots.get(1).size();
+            int countPresences = 0;
 
             for (QueryDocumentSnapshot documentSnapshot : querySnapshots.get(0)) {
                 if (Objects.equals(documentSnapshot.getString("reason"), "Maladie")) {
                     countMaladie++;
                 } else if (Objects.equals(documentSnapshot.getString("reason"), "Formation")) {
                     countFormation++;
-                }else if (Objects.equals(documentSnapshot.getString("reason"), "Maternité")) {
+                } else if (Objects.equals(documentSnapshot.getString("reason"), "Maternité")) {
                     countMaternite++;
-                }
-                else if (Objects.equals(documentSnapshot.getString("reason"), "Autre")) {
+                } else if (Objects.equals(documentSnapshot.getString("reason"), "Autre")) {
                     countAutre++;
                 }
             }
+            for (QueryDocumentSnapshot documentSnapshot : querySnapshots.get(1)) {
+                if (Objects.equals(documentSnapshot.getBoolean("confirmed"), true)) {
+                    countPresences++;
 
+                }
+            }
             progressBar.setVisibility(View.GONE);
             anyChartView.setVisibility(View.VISIBLE);
             imageView.setVisibility(View.VISIBLE);
             ButtonDetailsStatistics.setVisibility(View.VISIBLE);
-            ArrayList<DataEntry> pieData = new ArrayList<>() ;
+            ArrayList<DataEntry> pieData = new ArrayList<>();
 
-            pieData.add(new ValueDataEntry(getString(R.string.presences),countPresences)) ;
-            pieData.add(new ValueDataEntry(getString(R.string.reason_sickness), countMaladie)) ;
-            pieData.add(new ValueDataEntry(getString(R.string.reason_course),countFormation));
-            pieData.add(new ValueDataEntry(getString(R.string.reason_maternity),countMaternite)) ;
-            pieData.add(new ValueDataEntry(getString(R.string.reason_other),countAutre)) ;
+            pieData.add(new ValueDataEntry(getString(R.string.presences), countPresences));
+            pieData.add(new ValueDataEntry(getString(R.string.reason_sickness), countMaladie));
+            pieData.add(new ValueDataEntry(getString(R.string.reason_course), countFormation));
+            pieData.add(new ValueDataEntry(getString(R.string.reason_maternity), countMaternite));
+            pieData.add(new ValueDataEntry(getString(R.string.reason_other), countAutre));
 
 
-            pie.data(pieData) ;
+            pie.data(pieData);
 
-            pie.title(getString(R.string.toolbar_title_statistics_activity)) ;
+            pie.title(getString(R.string.toolbar_title_statistics_activity));
             pie.legend().enabled(true);
             pie.legend().position("bottom");
             pie.legend().padding(10d, 10d, 10d, 10d);
-            pie.animation() ;
+            pie.animation();
 
             anyChartView.setChart(pie);
         });
     }
+
     public FirebaseUser getCurrentUser() {
         return FirebaseAuth.getInstance().getCurrentUser();
     }
@@ -120,14 +126,15 @@ public class StatisticsActivity extends AppCompatActivity {
     private CollectionReference getUsersCollection() {
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
-    private void setupListerners(){
+
+    private void setupListerners() {
         ButtonDetailsStatistics.setOnClickListener(view -> {
             startDetailsStatisticsActivity();
         });
     }
 
-    private void startDetailsStatisticsActivity(){
-        Intent intent = new Intent(this, DetailsStatisticsActivity.class) ;
+    private void startDetailsStatisticsActivity() {
+        Intent intent = new Intent(this, DetailsStatisticsActivity.class);
         startActivity(intent);
     }
 

@@ -40,15 +40,20 @@
     <string name="negative_location">Dommage vous ne vous trouvez pas dans l\'enceinte du campus .</string>
     <string name="neutral_position">Rentrez en arrière puis revenez pour mettre à jour votre actuelle localisation .</string>
     <string name="presence_marker_text">Je suis présent !\n</string>
+    <string name="presence_marker_toast_text">Marquage impossible . Veuillez vous référer au guide pour les horaires valides .</string>
     <string name="send_absence_form">Envoyer un formulaire d\'absence</string>
     <string name="absence_form_notice">Veuillez s\'il vous plaît remplir ce formulaire pour signaler votre absence .</string>
     <string name="absence_form_username_field">Nom d\'utilisateur :</string>
     <string name="absence_form_date_field">Date de l\'absence :</string>
     <string name="absence_form_field_reason">Motif de l\'absence :</string>
     <string name="absence_form_button_send_text">Envoyer</string>
-    <string name="presence_noticed_successfully">Votre présence a été signalée .</string>
+    <string name="presence_noticed">Votre présence a été signalée pour ce matin , venez la confirmer plus tard .</string>
     <string name="presence_noticed_error">Erreur lors du signalement de votre présence.</string>
-    <string name="presence_already_noticed">Votre présence a déjà été signalée aujourd\'hui !</string>
+    <string name="presence_already_noticed">Votre présence a déjà été signalée ce matin !</string>
+    <string name="no_presence_noticed_morning">Aucune présence signalée pour ce matin , vous êtes absent ! Un formulaire d\'absence a été envoyé .</string>
+
+    <string name="presence_confirmed">Présence confirmée .</string>
+    <string name="presence_already_confirmed">Votre présence a déjà été confirmée.</string>
     <!-- ABSENCE ACTIVITY -->
     <string name="toolbar_title_absence_activity">Formulaire d\'absence</string>
     <string-array name="motifs_absence">
@@ -75,6 +80,7 @@
     <string name="fb_login_protocol_scheme">fb1488817101526462</string>
     <string name="facebook_client_token">8a303d2dc2c3facb372bde0f9577e3c9</string>
     <string name="about_text">Bienvenue sur notre application! Cette application a été créée pour vous aider à ...</string>
+
 
 
 </resources>

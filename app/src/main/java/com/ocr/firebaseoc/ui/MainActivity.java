@@ -91,20 +91,21 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 startSignInActivity();
             }
         });
-        String toastText = getString(R.string.error_not_connected);
+        //Bouton de localisation
         binding.locationButton.setOnClickListener(view -> {
             if (userManager.isCurrentUserLogged() && checkLocationEnabled()) {
                 startLocationActivity();
             } else if (!userManager.isCurrentUserLogged()) {
-                Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.error_not_connected) ,Toast.LENGTH_SHORT).show();
             }
         });
+        //Bouton pour les statisques
         binding.statisticsButton.setOnClickListener(view -> {
             if(userManager.isCurrentUserLogged()){
                 startStatisticsActivity();
             }
             else if (!userManager.isCurrentUserLogged()){
-                Toast.makeText(this,toastText,Toast.LENGTH_SHORT).show() ;
+                Toast.makeText(this,getString(R.string.error_not_connected),Toast.LENGTH_SHORT).show() ;
             }
         });
 

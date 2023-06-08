@@ -70,17 +70,18 @@
 
             <Button
                 android:id="@+id/presence_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:visibility="gone"
                 style="?android:attr/borderlessButtonStyle"
-                android:background="@drawable/button_radius_accent_color"
-                android:padding="@dimen/default_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="58dp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/default_large_margin"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/button_radius_disabled_color"
+                android:padding="@dimen/default_large_margin"
+                android:text="@string/presence_marker_text"
                 android:textColor="#fff"
                 android:textSize="@dimen/default_text_size"
-                android:text="@string/presence_marker_text" />
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/absence_button"
@@ -89,7 +90,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
-                android:background="@drawable/button_radius_accent_color"
                 android:padding="@dimen/default_margin"
                 android:text="@string/send_absence_form"
                 android:textColor="#fff"
