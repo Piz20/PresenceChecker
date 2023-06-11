@@ -19,7 +19,7 @@
     <string name="button_login_text_logged">Afficher le profil</string>
     <string name="button_login_text_not_logged">Connexion</string>
     <string name="button_statistics">Mes stats de presences</string>
-    <string name="readme">A lire</string>
+    <string name="readme">A LIRE !!!</string>
 
     <!-- PROFILE ACTIVITY -->
     <string name="toolbar_title_login_activity">Votre Profil</string>
@@ -65,6 +65,7 @@
     <string name="form_sent_successfully">Formulaire d\'absences envoyé avec succès .</string>
     <string name="form_sent_error">Erreur lors de l\'envoi du formulaire d\'absence .</string>
     <string name="already_sent_absence_form">Vous avez déjà envoyé un formulaire d\'absence aujourd\'hui.</string>
+    <string name="date_format">%d/%d/%d</string>
 
     <!-- STATISTICS ACTIVITY -->
     <string name="toolbar_title_statistics_activity">Mes stats</string>
@@ -72,14 +73,46 @@
     <string name="reason_course">Formation</string>
     <string name="reason_sickness">Maladie</string>
     <string name="reason_other">Autre</string>
-    <string name="presences">Présences</string>
-    <string name="details">Details</string>
+    <string name="reason_presence">Présence</string>
+    <string name="details">Détails</string>
+
 
     <!-- FACEBOOK LOGIN -->
     <string name="facebook_application_id">1488817101526462</string>
     <string name="fb_login_protocol_scheme">fb1488817101526462</string>
     <string name="facebook_client_token">8a303d2dc2c3facb372bde0f9577e3c9</string>
-    <string name="about_text">Bienvenue sur notre application! Cette application a été créée pour vous aider à ...</string>
+
+    <!-- ABOUT ACTIVITY -->
+    <string name="important_information">Informations importantes</string>
+    <string name="about_text">Welcome to Geostat! This application was created to help you report your presence or absence within your organization.\n\n
+
+Instructions:\n
+
+Please sign in or register with Google or Facebook.\n\n
+
+Press the \"mark my presence"\ button.\n\n
+
+A new screen will appear. It allows you to determine your location in relation to your organization\'s premises:\n\n
+
+*If you are outside the perimeter of your structure , you will be redirected to a page to send an absence form.\n\n
+
+*If you are inside the perimeter of your structure, you will click on the \"I am present"\ button.\n\n
+
+
+Note: Reporting of presence can only be done from 10:00 a.m. to 10:59 a.m. and from 3:00 p.m. to 3:59 p.m.\n\n
+
+
+*If no presence or absence report is made during the day, then starting from 8:00 p.m., the application will attempt to send an absence form to the database.\n\n
+
+Furthermore, you have the option to click on the \"My presence statistics"\ button to view your absence proportions and their reasons, as well as your presence.\n\n
+
+Press the \"DETAILS"\ button and you can view the exact days of presence and absence.\n\n
+
+Supervisor : Dr Macka Macka Ebenezer\n\n
+
+Developers : Piz , Einstein , Diva .\n\n
+
+  </string>
 
 
 

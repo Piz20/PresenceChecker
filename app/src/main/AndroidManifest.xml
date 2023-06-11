@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Permission pour pouvoir afficher des notifications-->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,22 +17,26 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <!-- SPLASH SCREEN ACTIVITY -->
+        <activity android:name=".ui.LoadingActivity"
+            android:exported="true"  android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <!-- MAIN ACTIVITY -->
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitle"> <!-- DISABLE TOOLBAR IN MAIN ACTIVITY -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity> <!-- PROFILE ACTIVITY -->
         <activity
             android:name=".ui.ProfileActivity"
             android:label="@string/toolbar_title_login_activity"
             android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/AppTheme.NoTitle"
             android:screenOrientation="portrait" /> <!-- LOCATION ACTIVITY -->
         <activity
             android:name=".ui.LocationActivity"
@@ -43,21 +47,25 @@
             android:name=".ui.AbsenceActivity"
             android:label="@string/toolbar_title_absence_activity"
             android:parentActivityName=".ui.LocationActivity"
+            android:theme="@style/AppTheme.NoTitle"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.StatisticsActivity"
             android:label="@string/toolbar_title_statistics_activity"
             android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/AppTheme.NoTitle"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.DetailsStatisticsActivity"
-            android:label="Detais de presences"
+            android:label="@string/details"
             android:parentActivityName=".ui.StatisticsActivity"
+            android:theme="@style/AppTheme.NoTitle"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.AboutActivity"
-            android:label="Informations Importantes"
+            android:label="@string/important_information"
             android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/AppTheme.NoTitle"
             android:screenOrientation="portrait"/>
-
+        <receiver android:name=".utils.AlarmReceiver"/>
 
 
         <!-- FACEBOOK LOGIN -->

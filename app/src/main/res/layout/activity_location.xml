@@ -14,7 +14,6 @@
         android:orientation="vertical"
         android:weightSum="100"
         android:background="#FFF">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -27,13 +26,15 @@
                 android:layout_height="match_parent"
                 android:id="@+id/map_view" />
         </RelativeLayout>
-
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_weight="50"
+            android:layout_height="0dp">
         <LinearLayout
             android:id="@+id/location_text_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="5dp"
-            android:layout_weight="50"
             android:orientation="vertical">
 
             <LinearLayout
@@ -57,7 +58,12 @@
                     app:srcCompat="@drawable/ic_red_cross"
                     android:visibility="gone"/>
             </LinearLayout>
-
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_margin="@dimen/default_large_margin"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/location_text_view"
@@ -88,21 +94,18 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/button_radius_error_color"
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
                 android:padding="@dimen/default_margin"
                 android:text="@string/send_absence_form"
                 android:textColor="#fff"
                 android:textSize="@dimen/default_text_size"
-                android:visibility="gone"/>
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_margin="@dimen/default_large_margin"
                 android:visibility="gone" />
 
 
+
         </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </RelativeLayout>

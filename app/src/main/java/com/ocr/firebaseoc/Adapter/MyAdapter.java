@@ -1,21 +1,23 @@
 package com.ocr.firebaseoc.Adapter;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.ocr.firebaseoc.R;
 import com.ocr.firebaseoc.models.Document;
-import com.ocr.firebaseoc.ui.DetailsStatisticsActivity;
 
 import java.util.List;
+import java.util.Objects;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private final List<Document> documents;
@@ -24,10 +26,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         public TextView dateTextView;
         public TextView reasonTextView;
 
+
+        public LinearLayout linearLayout ;
         public MyViewHolder(View itemView) {
             super(itemView);
             dateTextView = itemView.findViewById(R.id.date_text_view);
             reasonTextView = itemView.findViewById(R.id.reason_text_view);
+            linearLayout = itemView.findViewById(R.id.details_linear_layout) ;
         }
     }
 
@@ -50,10 +55,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         String dateString = DateFormat.format("dd/MM/yyyy", date.toDate()).toString();
         holder.dateTextView.setText(dateString);
         holder.reasonTextView.setText(reason);
+        if (!Objects.equals(reason, "Presence") && !Objects.equals(reason, "Présence")){
+
+            holder.linearLayout.setBackgroundColor(Color.parseColor("#FF5252"));
+        }
+        else {
+            holder.linearLayout.setBackgroundColor(Color.parseColor("#6BB18C"));
+        }
     }
 
     @Override
     public int getItemCount() {
         return documents.size();
     }
+
 }

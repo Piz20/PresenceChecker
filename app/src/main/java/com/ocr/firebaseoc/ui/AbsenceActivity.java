@@ -41,10 +41,10 @@ public class AbsenceActivity extends BaseActivity<ActivityAbsenceBinding> {
     private static final String COLLECTION_NAME = "users";
     private final UserManager userManager = UserManager.getInstance();
 
-    ProgressBar mProgressBar ;
+    ProgressBar mProgressBar;
     TextView mUsernameTextView;
 
-    TextView mDateAbsence ;
+    TextView mDateAbsence;
     Spinner mMotifAbsence;
 
     String reason;
@@ -63,10 +63,10 @@ public class AbsenceActivity extends BaseActivity<ActivityAbsenceBinding> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_absence);
-        mUsernameTextView = findViewById(R.id.username_text_view) ;
+        mUsernameTextView = findViewById(R.id.username_text_view);
         mDateAbsence = findViewById(R.id.date_absence);
         mMotifAbsence = findViewById(R.id.motif_absence);
-        mProgressBar = findViewById(R.id.progress_bar) ;
+        mProgressBar = findViewById(R.id.progress_bar);
         sendAbsenceButton = findViewById(R.id.send_absence_button);
         updateUIWithUserData();
         setupListeners();
@@ -96,7 +96,8 @@ public class AbsenceActivity extends BaseActivity<ActivityAbsenceBinding> {
         int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
         // Initialiser la date avec la date actuelle et le rendre impossible à mettre à jour
-        mDateAbsence.setText(dayOfMonth+"/"+month+"/"+year) ;
+        String dateFormat = getString(R.string.date_format,dayOfMonth,month,year) ;
+        mDateAbsence.setText(dateFormat);
 
         mMotifAbsence.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -133,6 +134,22 @@ public class AbsenceActivity extends BaseActivity<ActivityAbsenceBinding> {
 
     //Gere l'envoi des données sur Firebase afin de créer un document dans la collection absence
     public void createAbsence(View view) {
+        mProgressBar.setVisibility(View.VISIBLE);
+        FirebaseUser user = getCurrentUser();
+        Calendar calendar = Calendar.getInstance();
+        //Pour convertir l'objet datePicker en date
+
+        date = calendar.getTime();
+
+
+        if (user != null) {
+
+            checkCollectionPresence(view);
+        }
+
+    }
+
+    private void checkCollectionPresence(View view) {
         FirebaseUser user = getCurrentUser();
         Calendar calendar = Calendar.getInstance();
         //Pour convertir l'objet datePicker en date
@@ -143,20 +160,74 @@ public class AbsenceActivity extends BaseActivity<ActivityAbsenceBinding> {
         int month = calendar.get(Calendar.MONTH) + 1;
         int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
-        mProgressBar.setVisibility(View.VISIBLE);
 
         if (user != null) {
             String uid = user.getUid();
 
-            this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).orderBy("date", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            this.getUsersCollection().document(uid).collection("presences").orderBy("date", Query.Direction.DESCENDING).whereEqualTo("confirmed", true).limit(1).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    if (task.getResult().isEmpty()) {
+                        TodoForAbsenceCollection(view);
+                    }
+                    if (!task.getResult().isEmpty()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Timestamp timestamp = document.getTimestamp("date");
+                            Calendar FirestoreCalendar = Calendar.getInstance();
+                            if (timestamp != null) {
+                                FirestoreCalendar.setTimeInMillis(timestamp.getSeconds() * 1000);
+                            }
+                            int existingYear = FirestoreCalendar.get(Calendar.YEAR);
+                            int existingMonth = FirestoreCalendar.get(Calendar.MONTH) + 1;
+                            int existingDay = FirestoreCalendar.get(Calendar.DAY_OF_MONTH);
+                            System.out.println(existingDay + " " + existingMonth + " " + existingYear + "****************************");
+                            System.out.println(dayOfMonth + " " + month + " " + year + "****************************");
+
+                            if (year == existingYear && month == existingMonth && dayOfMonth == existingDay) {
+                                mProgressBar.setVisibility(View.GONE);
+                                Snackbar.make(view, R.string.presence_already_confirmed, Snackbar.LENGTH_LONG).show();
+                                break;
+                            } else if ((!(year == existingDay && month == existingMonth && dayOfMonth == existingDay))) {
+                                TodoForAbsenceCollection(view);
+                                break;
+                            }
+                        }
+                    } else {
+
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+
+                }
+            });
+        }
+    }
+
+    private void TodoForAbsenceCollection(View view) {
+        FirebaseUser user = getCurrentUser();
+        Calendar calendar = Calendar.getInstance();
+        //Pour convertir l'objet datePicker en date
+
+        date = calendar.getTime();
+
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+
+        if (user != null) {
+            String uid = user.getUid();
+
+            this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).orderBy("date", Query.Direction.DESCENDING).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         if (task.getResult().isEmpty()) {
-                            this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).add(this.makeAbsence())
-                                    .addOnSuccessListener(documentReference -> { Snackbar.make(view, R.string.form_sent_successfully, Snackbar.LENGTH_LONG).show();mProgressBar.setVisibility(View.GONE);})
-                                    .addOnFailureListener(e -> {Snackbar.make(view, "Erreur lors de l'envoi du formulaire d'absence.", Snackbar.LENGTH_LONG)
-                                            .show();mProgressBar.setVisibility(View.GONE);});
+                            this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).add(this.makeAbsence()).addOnSuccessListener(documentReference -> {
+                                Snackbar.make(view, R.string.form_sent_successfully, Snackbar.LENGTH_LONG).show();
+                                mProgressBar.setVisibility(View.GONE);
+                            }).addOnFailureListener(e -> {
+                                Snackbar.make(view, "Erreur lors de l'envoi du formulaire d'absence.", Snackbar.LENGTH_LONG).show();
+                                mProgressBar.setVisibility(View.GONE);
+                            });
 
                         }
                         if (!task.getResult().isEmpty()) {
@@ -174,14 +245,16 @@ public class AbsenceActivity extends BaseActivity<ActivityAbsenceBinding> {
 
                                 if (year == existingYear && month == existingMonth && dayOfMonth == existingDay) {
                                     mProgressBar.setVisibility(View.GONE);
-                                    Snackbar.make(view, R.string.already_sent_absence_form, Snackbar.LENGTH_LONG)
-                                            .show();
-                                    break ;
-                                } else if ((!(year == existingDay && month == existingMonth && dayOfMonth == existingDay))){
-                                    this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).add(this.makeAbsence())
-                                            .addOnSuccessListener(documentReference -> { Snackbar.make(view, R.string.form_sent_successfully, Snackbar.LENGTH_LONG).show();mProgressBar.setVisibility(View.GONE);})
-                                            .addOnFailureListener(e -> {Snackbar.make(view, R.string.form_sent_error, Snackbar.LENGTH_LONG)
-                                                    .show();mProgressBar.setVisibility(View.GONE);});
+                                    Snackbar.make(view, R.string.already_sent_absence_form, Snackbar.LENGTH_LONG).show();
+                                    break;
+                                } else if ((!(year == existingDay && month == existingMonth && dayOfMonth == existingDay))) {
+                                    this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).add(this.makeAbsence()).addOnSuccessListener(documentReference -> {
+                                        Snackbar.make(view, R.string.form_sent_successfully, Snackbar.LENGTH_LONG).show();
+                                        mProgressBar.setVisibility(View.GONE);
+                                    }).addOnFailureListener(e -> {
+                                        Snackbar.make(view, R.string.form_sent_error, Snackbar.LENGTH_LONG).show();
+                                        mProgressBar.setVisibility(View.GONE);
+                                    });
                                     break;
                                 }
                             }
@@ -194,7 +267,7 @@ public class AbsenceActivity extends BaseActivity<ActivityAbsenceBinding> {
                 }
 
                 public Absence makeAbsence() {
-                    return new Absence(Absence.reasonToFrench(reason), date);
+                    return new Absence(reason, date);
                 }
 
                 private CollectionReference getUsersCollection() {
@@ -204,8 +277,6 @@ public class AbsenceActivity extends BaseActivity<ActivityAbsenceBinding> {
 
 
         }
-
     }
-
 }
 

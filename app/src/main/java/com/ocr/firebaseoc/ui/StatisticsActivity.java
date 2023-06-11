@@ -1,12 +1,8 @@
 package com.ocr.firebaseoc.ui;
 
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,7 +25,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ocr.firebaseoc.R;
-import com.ocr.firebaseoc.manager.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +33,6 @@ import java.util.Objects;
 public class StatisticsActivity extends AppCompatActivity {
 
     private static final String COLLECTION_NAME = "users";
-    private final UserManager userManager = UserManager.getInstance();
     AnyChartView anyChartView;
     ImageView imageView;
     ProgressBar progressBar;
@@ -78,13 +72,13 @@ public class StatisticsActivity extends AppCompatActivity {
             int countPresences = 0;
 
             for (QueryDocumentSnapshot documentSnapshot : querySnapshots.get(0)) {
-                if (Objects.equals(documentSnapshot.getString("reason"), "Maladie")) {
+                if (Objects.equals(documentSnapshot.getString("reason"), "Maladie") ||Objects.equals(documentSnapshot.getString("reason"), "Sickness")) {
                     countMaladie++;
-                } else if (Objects.equals(documentSnapshot.getString("reason"), "Formation")) {
+                } else if (Objects.equals(documentSnapshot.getString("reason"), "Formation") || Objects.equals(documentSnapshot.getString("reason"), "Course")) {
                     countFormation++;
-                } else if (Objects.equals(documentSnapshot.getString("reason"), "Maternité")) {
+                } else if (Objects.equals(documentSnapshot.getString("reason"), "Maternité") || Objects.equals(documentSnapshot.getString("reason"), "Maternity")  ) {
                     countMaternite++;
-                } else if (Objects.equals(documentSnapshot.getString("reason"), "Autre")) {
+                } else if (Objects.equals(documentSnapshot.getString("reason"), "Autre") || Objects.equals(documentSnapshot.getString("reason"), "Other") ) {
                     countAutre++;
                 }
             }
@@ -100,7 +94,7 @@ public class StatisticsActivity extends AppCompatActivity {
             ButtonDetailsStatistics.setVisibility(View.VISIBLE);
             ArrayList<DataEntry> pieData = new ArrayList<>();
 
-            pieData.add(new ValueDataEntry(getString(R.string.presences), countPresences));
+            pieData.add(new ValueDataEntry(getString(R.string.reason_presence), countPresences));
             pieData.add(new ValueDataEntry(getString(R.string.reason_sickness), countMaladie));
             pieData.add(new ValueDataEntry(getString(R.string.reason_course), countFormation));
             pieData.add(new ValueDataEntry(getString(R.string.reason_maternity), countMaternite));
@@ -128,9 +122,7 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void setupListerners() {
-        ButtonDetailsStatistics.setOnClickListener(view -> {
-            startDetailsStatisticsActivity();
-        });
+        ButtonDetailsStatistics.setOnClickListener(view -> startDetailsStatisticsActivity());
     }
 
     private void startDetailsStatisticsActivity() {

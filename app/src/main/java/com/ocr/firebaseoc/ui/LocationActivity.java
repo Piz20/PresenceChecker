@@ -56,15 +56,13 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
     private static final String MAPVIEW_BUNDLE_KEY = "211";
     private static final String COLLECTION_NAME = "users";
 
-    private static final String SUB_COLLECTION_NAME = "presences";
 
     private final double latitudeEnspd = 4.0657954;
     private final double longitudeEnspd = 9.7088116;
 
-    private final int valid_hour1 = 5;
+    private final int valid_hour1 = 10;
 
-    private final int valid_hour2 = 10;
-
+    private final int valid_hour2 = 15;
     private LocationCalcul mLocationCalcul;
     private GoogleMap mMap;
 
@@ -118,7 +116,7 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
 
     private void activeButtonPresence() {
         Calendar cal = Calendar.getInstance();
-        int hour = cal.get(Calendar.HOUR_OF_DAY) + 1;
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
         if ((hour == valid_hour1) || (hour == valid_hour2)) {
             mButtonPresence.setBackgroundResource(R.drawable.button_radius_accent_color);
         } else {
@@ -272,8 +270,10 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
     public void createPresence(View view) {
         mProgressbar.setVisibility(View.VISIBLE);
 
+
+        System.out.println("*********************************************************************************"+valid_hour1) ;
         Calendar cal = Calendar.getInstance();
-        int hour = cal.get(Calendar.HOUR_OF_DAY) + 1;
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
 
         FirebaseUser user = getCurrentUser();
         if (user != null) {
@@ -321,8 +321,6 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
                             int existingYear = FirestoreCalendar.get(Calendar.YEAR);
                             int existingMonth = FirestoreCalendar.get(Calendar.MONTH) + 1;
                             int existingDay = FirestoreCalendar.get(Calendar.DAY_OF_MONTH);
-                            System.out.println(existingDay + " " + existingMonth + " " + existingYear + "****************************");
-                            System.out.println(dayOfMonth + " " + month + " " + year + "****************************");
 
                             if (year == existingYear && month == existingMonth && dayOfMonth == existingDay) {
                                 mProgressbar.setVisibility(View.GONE);
@@ -374,8 +372,6 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
                             int existingYear = FirestoreCalendar.get(Calendar.YEAR);
                             int existingMonth = FirestoreCalendar.get(Calendar.MONTH) + 1;
                             int existingDay = FirestoreCalendar.get(Calendar.DAY_OF_MONTH);
-                            System.out.println(existingDay + " " + existingMonth + " " + existingYear + "****************************");
-                            System.out.println(dayOfMonth + " " + month + " " + year + "****************************");
 
                             if (year == existingYear && month == existingMonth && dayOfMonth == existingDay) {
                                 mProgressbar.setVisibility(View.GONE);
@@ -413,13 +409,13 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
         if (user != null) {
             String uid = user.getUid();
             //  Ici on recupère tous les documents de la sous collection presences par ordre décroissqnt. remarque : Du fait de toutes ces instructions Break , la comparaison ne se fait que sur le premier document.
-            this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).orderBy("date", Query.Direction.DESCENDING).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            this.getUsersCollection().document(uid).collection("presences").orderBy("date", Query.Direction.DESCENDING).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         //Si la sous collection est complètement vide
                         if (task.getResult().isEmpty()) {
-                            this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).add(new Presence("", date, false)).addOnSuccessListener(documentReference -> {
+                            this.getUsersCollection().document(uid).collection("presences").add(new Presence(getString(R.string.reason_presence), date, false)).addOnSuccessListener(documentReference -> {
                                 Snackbar.make(view, R.string.presence_noticed, Snackbar.LENGTH_LONG).show();
                                 mProgressbar.setVisibility(View.GONE);
                             }).addOnFailureListener(e -> {
@@ -446,7 +442,7 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
                                     break;
                                 } // Aucun document avec la date de ce matin . Donc on peut en ajouter un .
                                 else if (!(year == existingDay && month == existingMonth && dayOfMonth == existingDay)) {
-                                    this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).add(new Presence("", date, false)).addOnSuccessListener(documentReference -> {
+                                    this.getUsersCollection().document(uid).collection("presences").add(new Presence(getString(R.string.reason_presence), date, false)).addOnSuccessListener(documentReference -> {
                                         Snackbar.make(view, R.string.presence_noticed, Snackbar.LENGTH_LONG).show();
                                         mProgressbar.setVisibility(View.GONE);
                                     }).addOnFailureListener(e -> {
@@ -467,6 +463,7 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
 
                 //Retourne l'utilisateur actuellement connecté
                 private CollectionReference getUsersCollection() {
+
                     return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
 
                 }
@@ -490,15 +487,14 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
         FirebaseUser user = getCurrentUser();
         if (user != null) {
             String uid = user.getUid();
-            this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).orderBy("date", Query.Direction.DESCENDING).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            this.getUsersCollection().document(uid).collection("presences").orderBy("date", Query.Direction.DESCENDING).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         // Si la sous collection est completement vide
                         if (task.getResult().isEmpty()) {
-                            mProgressbar.setVisibility(View.GONE);
-                            this.getUsersCollection().document(uid).collection(SUB_COLLECTION_NAME).add(new Absence(Absence.reasonToFrench("Other"), date)).addOnSuccessListener(documentReference -> {
-                                Snackbar.make(view, R.string.no_presence_noticed_morning, 5).show();
+                            this.getUsersCollection().document(uid).collection("absences").add(new Absence(getString(R.string.reason_other), date)).addOnSuccessListener(documentReference -> {
+                                Snackbar.make(view, R.string.no_presence_noticed_morning, Snackbar.LENGTH_LONG).show();
                                 mProgressbar.setVisibility(View.GONE);
                             }).addOnFailureListener(e -> {
                                 Snackbar.make(view, R.string.form_sent_error, Snackbar.LENGTH_LONG).show();
@@ -533,8 +529,8 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
                                     break;
                                 } //Si il n y as pas déjà un document avec la date d'aujourd'hui
                                 else if (!(year == existingDay && month == existingMonth && dayOfMonth == existingDay)) {
-                                    this.getUsersCollection().document(uid).collection("absences").add(new Absence(Absence.reasonToFrench("Other"), date)).addOnSuccessListener(documentReference -> {
-                                        Snackbar.make(view, R.string.no_presence_noticed_morning, 5).show();
+                                    this.getUsersCollection().document(uid).collection("absences").add(new Absence(getString(R.string.reason_other), date)).addOnSuccessListener(documentReference -> {
+                                        Snackbar.make(view, R.string.no_presence_noticed_morning, Snackbar.LENGTH_LONG).show();
                                         mProgressbar.setVisibility(View.GONE);
                                     }).addOnFailureListener(e -> {
                                         Snackbar.make(view, R.string.form_sent_error, Snackbar.LENGTH_LONG).show();

@@ -1,17 +1,18 @@
 package com.ocr.firebaseoc.ui;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 
 import com.facebook.FacebookSdk;
@@ -25,12 +26,15 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.ocr.firebaseoc.R;
 import com.ocr.firebaseoc.databinding.ActivityMainBinding;
 import com.ocr.firebaseoc.manager.UserManager;
+import com.ocr.firebaseoc.utils.AlarmReceiver;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -60,9 +64,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         FacebookSdk.sdkInitialize(getApplicationContext());
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+
+
         setupListeners();
-
-
+        setAlarmanager();
     }
    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -216,6 +222,40 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             }
         }
     }
+  private void setAlarmanager(){
+      Calendar startTime = Calendar.getInstance();
+      startTime.set(Calendar.HOUR_OF_DAY, 20);
+      startTime.set(Calendar.MINUTE, 0);
+      startTime.set(Calendar.SECOND, 0);
 
+// Si l'heure de départ est passée aujourd'hui, ajoutez un jour
+      if (startTime.before(Calendar.getInstance())) {
+          startTime.add(Calendar.DATE, 1);
+      }
 
+// Créez un calendrier pour définir l'heure de fin de l'alarme
+      Calendar endTime = Calendar.getInstance();
+      endTime.set(Calendar.HOUR_OF_DAY, 23);
+      endTime.set(Calendar.MINUTE, 40);
+      endTime.set(Calendar.SECOND, 0);
+
+// Créez un intent pour votre action à effectuer
+      Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+      PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+// Obtenez l'AlarmManager
+      AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+// Planifiez votre action pour la première fois
+      alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, startTime.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+
+// Si l'heure de fin est avant la prochaine alarme, annulez la répétition
+      if (endTime.before(startTime)) {
+          pendingIntent.cancel();
+      } else {
+          // Planifiez votre action pour toutes les 20 minutes jusqu'à l'heure de fin
+          alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, startTime.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+      }
+
+}
 }

@@ -1,6 +1,7 @@
 package com.ocr.firebaseoc.ui;
 
 import android.os.Bundle;
+import android.widget.ScrollView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

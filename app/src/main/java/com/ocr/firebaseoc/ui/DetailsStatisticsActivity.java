@@ -1,10 +1,6 @@
 package com.ocr.firebaseoc.ui;
 
-import static android.content.ContentValues.TAG;
-
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 

@@ -4,6 +4,9 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/linearlayout_border"
+    android:id="@+id/details_linear_layout"
+    android:layout_marginTop="10dp"
     android:padding="20dip">
 
     <TextView
@@ -11,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:textColor="#000000" />
+        android:textColor="#000" />
 
     <TextView
         android:id="@+id/reason_text_view"
@@ -19,5 +22,5 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:textSize="16sp"
-        android:textColor="#000000" />
+        android:textColor="#000" />
 </LinearLayout>

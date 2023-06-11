@@ -16,7 +16,7 @@
     <string name="button_login_text_logged">View your profile</string>
     <string name="button_login_text_not_logged">Log In</string>
     <string name="button_statistics">My presence stats</string>
-    <string name="readme">To read , very important</string>
+    <string name="readme">README !!!</string>
 
     <!-- PROFILE ACTIVITY -->
     <string name="toolbar_title_login_activity">Your Profile</string>
@@ -65,6 +65,7 @@
     <string name="form_sent_successfully">Form has been sent successfully.</string>
     <string name="form_sent_error">Error when sending absence form .</string>
     <string name="already_sent_absence_form">You have already sent a form today.</string>
+    <string name="date_format">%d/%d/%d</string>
 
     <!-- STATISTICS ACTIVITY -->
     <string name="toolbar_title_statistics_activity">My stats</string>
@@ -72,10 +73,40 @@
     <string name="reason_course">Course</string>
     <string name="reason_sickness">Sickness</string>
     <string name="reason_other">Other</string>
-    <string name="presences">Presences</string>
+    <string name="reason_presence">Presence</string>
     <string name="details">Details</string>
     <!-- ABOUT ACTIVITY -->
-    <string name="about_text">Bienvenue sur notre application! Cette application a été créée pour vous aider à ...</string>
+
+    <string name="important_information">Important informations</string>
+    <string name="about_text">Welcome to Geostat! This application was created to help you report your presence or absence within your organization.\n\n
+
+Instructions:\n
+
+Please sign in or register with Google or Facebook.\n\n
+
+Press the \"mark my presence"\ button.\n\n
+
+A new screen will appear. It allows you to determine your location in relation to your organization\'s premises:\n\n
+
+*If you are outside the perimeter of your structure , you will be redirected to a page to send an absence form.\n\n
+
+*If you are inside the perimeter of your structure, you will click on the \"I am present"\ button.\n\n
+
+
+Note: Reporting of presence can only be done from 10:00 a.m. to 10:59 a.m. and from 3:00 p.m. to 3:59 p.m.\n\n
+
+
+*If no presence or absence report is made during the day, then starting from 8:00 p.m., the application will attempt to send an absence form to the database.\n\n
+
+Furthermore, you have the option to click on the \"My presence statistics"\ button to view your absence proportions and their reasons, as well as your presence.\n\n
+
+Press the \"DETAILS"\ button and you can view the exact days of presence and absence.\n\n
+
+Supervisor : Dr Macka Macka Ebenezer\n\n
+
+Developers : Piz , Einstein , Diva .\n\n
+
+</string>
 
     <!-- FACEBOOK LOGIN -->
     <string name="facebook_application_id">1488817101526462</string>

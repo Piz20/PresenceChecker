@@ -32,19 +32,6 @@ public class Absence {
         this.date = date;
     }
 
-    public static String reasonToFrench(String reason){
-        if(Objects.equals(reason, "Sickness")){
-            return "Maladie" ;
-        }
-       else if(Objects.equals(reason, "Maternity")){
-           return "Maternité" ;
-        }
-        else if(Objects.equals(reason, "Course")){
-            return "Formation" ;
-        }
-        else
-            return "Autre" ;
-    }
 
 
 

@@ -93,8 +93,11 @@
                 android:id="@+id/send_absence_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="?android:attr/borderlessButtonStyle"
+                android:background="@drawable/button_radius_primary_color"
                 android:layout_gravity="end"
                 android:layout_margin="16dp"
+                android:textColor="#FFF"
                 android:text="@string/absence_form_button_send_text" />
 
         </LinearLayout>
