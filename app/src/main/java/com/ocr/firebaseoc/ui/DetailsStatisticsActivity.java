@@ -23,6 +23,7 @@ import com.ocr.firebaseoc.R;
 import com.ocr.firebaseoc.models.Document;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DetailsStatisticsActivity extends AppCompatActivity {
@@ -56,8 +57,11 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
                      Timestamp date = document.getTimestamp("date");
                      documents.add(new Document(reason, date));
                  }
+                 //Pour trier notre liste par ordre de dates decroissantes
+                 Collections.sort(documents, (document1, document2) -> document2.getDate().compareTo(document1.getDate()));
                  // Obtention de la RecyclerView
                  RecyclerView recyclerView = findViewById(R.id.recyclerView);
+
                  recyclerView.setVisibility(View.VISIBLE);
                  // Configuration de la RecyclerView
                  MyAdapter adapter = new MyAdapter(documents);

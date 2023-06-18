@@ -57,12 +57,15 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
     private static final String COLLECTION_NAME = "users";
 
 
-    private final double latitudeEnspd = 4.0657954;
-    private final double longitudeEnspd = 9.7088116;
+    private final double latitudeEnspd = 4.090750;
+    private final double longitudeEnspd = 9.803833;
 
     private final int valid_hour1 = 10;
 
     private final int valid_hour2 = 15;
+    Calendar cal = Calendar.getInstance();
+    int hour = cal.get(Calendar.HOUR_OF_DAY);
+
     private LocationCalcul mLocationCalcul;
     private GoogleMap mMap;
 
@@ -115,8 +118,7 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
     }
 
     private void activeButtonPresence() {
-        Calendar cal = Calendar.getInstance();
-        int hour = cal.get(Calendar.HOUR_OF_DAY);
+
         if ((hour == valid_hour1) || (hour == valid_hour2)) {
             mButtonPresence.setBackgroundResource(R.drawable.button_radius_accent_color);
         } else {
@@ -222,7 +224,6 @@ public class LocationActivity extends BaseActivity<ActivityLocationBinding> impl
                 double longitude = location.getLongitude();
 
                 mLocationCalcul = new LocationCalcul(latitudeEnspd, longitudeEnspd, latitude, longitude, 1);
-                System.out.println("********************************************************" + latitude + " " + longitude);
                 if (mLocationCalcul.dansLeRayon()) {
                     mTextView.setText(R.string.positive_location);
                     mLocationImage.setImageResource(R.drawable.ic_good_location);
